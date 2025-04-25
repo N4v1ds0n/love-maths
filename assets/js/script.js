@@ -40,7 +40,14 @@ function runGame (gameType) {
     } else if (gameType === 'multiply'){
         displayMultiplyQuestion(num1, num2);
     } else if (gameType === 'division'){
-        displayDivideQuestion(num1, num2);
+        let operand1 = num1 > num2 ? num1 : num2;
+        let operand2 = num2 < num1 ? num2 : num1;
+        if (operand1%operand2 === 0){
+            displayDivideQuestion(operand1, operand2);
+        } else {
+            runGame('division')
+        }
+        
     } else {
         alert(`Unknown game type ${gameType}`);
         throw `Unknown game type ${gameType}. Aborting!`;
@@ -52,7 +59,7 @@ function runGame (gameType) {
  * in the returned calculatedCorrectAnswer array.
  */
 function checkAnswer () {
-    let userAnswer = parseFloat(document.getElementById('answer-box').value);
+    let userAnswer = parseInt(document.getElementById('answer-box').value);
     let calculatedAnswer = calculateCorrectAnswer();
     let isCorrect = userAnswer === calculatedAnswer[0];
     
@@ -73,8 +80,8 @@ function checkAnswer () {
  * directly from the DOM, and returns the correct answer.
  */
 function calculateCorrectAnswer () {
-    let operand1 = parseFloat(document.getElementById('operand1').innerText);
-    let operand2 = parseFloat(document.getElementById('operand2').innerText);
+    let operand1 = parseInt(document.getElementById('operand1').innerText);
+    let operand2 = parseInt(document.getElementById('operand2').innerText);
     let operator = document.getElementById('operator').innerText;
     
     if (operator === '+'){
