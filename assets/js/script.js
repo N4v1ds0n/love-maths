@@ -14,7 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
     }
-
+    
+    document.getElementById('answer-box').addEventListener('keydown', function(e){
+        if (e.key === "Enter"){
+            checkAnswer();
+        }
+    })
+    
     runGame('addition');
 })
 
@@ -58,7 +64,8 @@ function checkAnswer () {
         incrementWrongAnswer();
     }
     runGame(calculatedAnswer[1]);
-    document.getElementById('answer-box').value = ''
+    document.getElementById('answer-box').value = '';
+    document.getElementById('answer-box').focus();
 }
 
 /**
