@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     for (let button of buttons) {
         button.addEventListener('click', function() {
             if (this.getAttribute('data-type') === 'submit'){
-                incrementScore(checkAnswer(calculateCorrectAnswer()));
+                checkAnswer();
             } else {
                 let gameType = this.getAttribute('data-type');
                 runGame(gameType);
@@ -41,15 +41,24 @@ function runGame (gameType) {
     }
 }
 
-function checkAnswer (correctAnswer) {
-    const result = false; 
-    const answer = document.getElementById('answer-box');
-    if (answer == correctAnswer){
-        result = true;
+/**
+ * Checks the answer against the first element
+ * in the returned calculatedCorrectAnswer array.
+ */
+function checkAnswer () {
+    let userAnswer = parseInt(document.getElementById('answer-box').value);
+    let calculatedAnswer = calculateCorrectAnswer();
+    let isCorrect = userAnswer === calculatedAnswer[0];
+    
+    if (isCorrect){
+        alert('Correct!')
+        incrementScore()
     } else {
-        result = false;
+        alert(`${userAnswer} is wrong! The correct answer is: ${calculatedAnswer[0]}.`)
+        incrementWrongAnswer()
     }
-    return result;
+    runGame(calculatedAnswer[1]);
+    document.getElementById('answer-box').value = ''
 }
 
 /**
@@ -76,22 +85,18 @@ function calculateCorrectAnswer () {
     return correctAnswer;
 }
 
-function incrementScore (result) {
-    const score = document.getElementById('score');
-    if (result){
-        score.value +=1;
-    } else {
-        incrementWrongAnswer(result);
-    }
+/**
+ * Bumps up the score count if answer was correct
+ */
+function incrementScore() {
+    parseInt(document.getElementById('score').value)++;
 }
 
-function incrementWrongAnswer (result) {
-    const incorrect = document.getElementById('incorrect');
-    if (result){
-        incorrect.value +=1;
-    } else {
-        incrementScore(result);
-    }
+/**
+ * Increases cont fr incorrect guesses if answer is wrong
+ */
+function incrementWrongAnswer() {
+    parseInt(document.getElementById('incorrect').value)++;
 }
 
 function displayAdditionQuestion(operand1, operand2) {
